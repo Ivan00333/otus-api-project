@@ -1,13 +1,18 @@
 import requests
-from config import get_base_url
+from config import settings
+from urllib.parse import urljoin
 
 class BaseClient:
     def __init__(self):
-        self.base_url = get_base_url()
         self.session = requests.Session()
+        self.session.headers.update({'Accept': 'application/json'})
+        user_client = settings.users_client
+        self.base_url = user_client.base_url
 
-    def post(self, api: str, json: dict = None, params: dict = None, headers: dict = None):
-        url =
-        response = self.session.post(f"{self.base_url}{api}")
-
+    def _request(self, method: str, path: str, **kwargs):
+        url = urljoin(self.base_url, path)
+        response = self.session.request(method, url)
         return response
+
+    def post(self, path: str, json: dict = None):
+        return self._request("POST", path, json=json)

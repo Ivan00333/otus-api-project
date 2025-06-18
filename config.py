@@ -1,5 +1,4 @@
 import os
-from dotenv import load_dotenv
 from pydantic import HttpUrl, BaseModel
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -9,7 +8,7 @@ class HTTPClientConfig(BaseModel):
     timeout: float
 
     @property
-    def client_url(self):
+    def base_url(self):
 
         return str(self.url)
 
@@ -24,3 +23,5 @@ class Settings(BaseSettings):
     )
 
     users_client: HTTPClientConfig
+
+settings = Settings()
