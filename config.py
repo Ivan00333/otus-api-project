@@ -5,7 +5,6 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class HTTPClientConfig(BaseModel):
     url: HttpUrl
-    timeout: float
 
     @property
     def base_url(self):
@@ -23,5 +22,3 @@ class Settings(BaseSettings):
     )
 
     users_client: HTTPClientConfig
-
-settings = Settings()

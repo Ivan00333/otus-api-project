@@ -1,23 +1,20 @@
 import logging
 
-
 def get_logger(name: str) -> logging.Logger:
     """
-    Создает и настраивает логгер с заданным именем.
-
-    :param name: Имя логгера.
-    :return: Объект логгера.
+    Создаёт и настраивает логгер с заданным именем,
+    но добавляет хендлеры только один раз.
     """
     logger = logging.getLogger(name)
-    logger.setLevel(logging.DEBUG)  # Устанавливаем уровень логирования
+    logger.setLevel(logging.DEBUG)
 
-    handler = logging.StreamHandler()  # Создаем обработчик вывода в консоль
-    handler.setLevel(logging.DEBUG)  # Устанавливаем уровень для обработчика
+    if not logger.hasHandlers():
+        handler = logging.StreamHandler()
+        handler.setLevel(logging.DEBUG)
+        fmt = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
+        handler.setFormatter(logging.Formatter(fmt))
+        logger.addHandler(handler)
 
-    # Формат логов: время | имя логгера | уровень логирования | сообщение
-    formatter = logging.Formatter('%(asctime)s | %(name)s | %(levelname)s | %(message)s')
-    handler.setFormatter(formatter)
-
-    logger.addHandler(handler)  # Добавляем обработчик к логгеру
+        logger.propagate = False
 
     return logger
