@@ -10,3 +10,6 @@ class ApiRoutes(Enum):
     REGISTER = "register"
     LOGIN = "login"
     DELAYED_RESPONSE = "users?delay={seconds}"
+
+    def with_id(self, **kwargs):
+        return self.value.format(**kwargs)
