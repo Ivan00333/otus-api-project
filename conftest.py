@@ -22,3 +22,4 @@ def prepare_user(users_client):
     yield user_id
 
     users_client.delete_user(user_id)
+

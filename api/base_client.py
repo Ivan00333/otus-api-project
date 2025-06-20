@@ -2,13 +2,33 @@ import requests
 from urllib.parse import urljoin
 from utils.logger import get_logger
 from config import HTTPClientConfig
+from urllib3.util.retry import Retry
+from requests.adapters import HTTPAdapter
 
 
 class BaseClient:
     def __init__(self, config: HTTPClientConfig):
         self.logger = get_logger(self.__class__.__name__)
         self.session = requests.Session()
-        self.session.headers.update({'Accept': 'application/json', "x-api-key": "reqres-free-v1"})
+
+        retries = Retry(
+            total=5,  # всего попыток
+            backoff_factor=0.3,  # задержка: 0.3s, 0.6s, 1.2s, …
+            status_forcelist=[500, 502, 503, 504],  # ретраить только на этих кодах
+            allowed_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"]
+        )
+        adapter = HTTPAdapter(max_retries=retries)
+        self.session.mount("https://", adapter)
+        self.session.mount("http://", adapter)
+
+        self.session.headers.update(
+            {
+                'Accept': '*/*',
+                "x-api-key": "reqres-free-v1",
+                "Connection": "keep-alive",
+                "Content-Type": "application/json"
+            }
+        )
         self.base_url = config.base_url
 
     def _request(self, method: str, path: str, **kwargs):

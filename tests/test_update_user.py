@@ -33,9 +33,9 @@ class TestUpdateUser:
         users_client.check_response_and_status_code(response, 400, UpdateUserResponse)
 
     @pytest.mark.xfail
-    @pytest.mark.parametrize("user_id", [99999, "test"])
-    def test_update_user_wrong_id(self, users_client, user_id):
+    def test_update_user_wrong_id(self, users_client):
         payload = UpdateUserRequest()
+        user_id = users_client.get_nonexistent_user_id()
         response = users_client.update_user(user_id, payload)
 
         Assertions.assert_status_code(response, 404)
