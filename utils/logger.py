@@ -1,5 +1,6 @@
 import logging
 
+
 def get_logger(name: str) -> logging.Logger:
     """
     Создаёт и настраивает логгер с заданным именем,
@@ -12,7 +13,8 @@ def get_logger(name: str) -> logging.Logger:
         handler = logging.StreamHandler()
         handler.setLevel(logging.DEBUG)
         fmt = "%(asctime)s | %(name)s | %(levelname)s | %(message)s"
-        handler.setFormatter(logging.Formatter(fmt))
+        date = "%Y-%m-%d %H:%M:%S"
+        handler.setFormatter(logging.Formatter(fmt, datefmt=date))
         logger.addHandler(handler)
 
         logger.propagate = False

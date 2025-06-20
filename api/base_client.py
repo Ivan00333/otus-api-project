@@ -25,7 +25,7 @@ class BaseClient:
         return self._request("GET", path, params=params, **kwargs)
 
     def put(self, path: str, json: dict = None, **kwargs):
-        return self._request(path, json=json, **kwargs)
+        return self._request("PUT", path, json=json, **kwargs)
 
     def delete(self, path: str, **kwargs):
-        return self._request(path, **kwargs)
+        return self._request("DELETE", path, **kwargs)

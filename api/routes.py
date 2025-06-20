@@ -11,5 +11,8 @@ class ApiRoutes(Enum):
     LOGIN = "login"
     DELAYED_RESPONSE = "users?delay={seconds}"
 
+    def __str__(self):
+        return self.value
+
     def with_id(self, **kwargs):
         return self.value.format(**kwargs)
