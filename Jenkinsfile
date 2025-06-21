@@ -5,7 +5,7 @@ pipeline {
   parameters {
     string(
       name: 'BRANCH',
-      defaultValue: 'main',
+      defaultValue: 'framework',
       description: 'Git branch to checkout'
     )
   }
