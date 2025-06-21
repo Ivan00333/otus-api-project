@@ -10,34 +10,17 @@ pipeline {
     )
   }
 
-  // 2) Указываем инструменты (если настроены в Global Tool Configuration)
-  tools {
-    python 'Python3'     // здесь имя вашей установки Python в Jenkins
-  }
-
   stages {
     stage('Checkout') {
       steps {
-        // 3) Чекаут нужной ветки
-        checkout([
-          $class: 'GitSCM',
-          branches: [[name: "*/${params.BRANCH}"]],
-          userRemoteConfigs: [[
-            url: 'git@github.com:your-org/your-repo.git',
-            credentialsId: 'your-git-credentials-id'
-          ]]
-        ])
+        git url: 'https://github.com/Ivan00333/otus-api-project.git', branch: 'framework'
       }
     }
 
-    stage('Setup & Install') {
+    stage('Build Docker Image') {
       steps {
-        sh """
-          python3 -m venv .venv
-          . .venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-        """
+        sh 'docker build -t tests .'
+        sh 'docker version'
       }
     }
 
