@@ -1,45 +1,26 @@
 pipeline {
   agent {
-    docker {
-      image 'python:3.13-slim'
-      args  '--user root'
+    dockerfile {
+      filename 'Dockerfile'
+      additionalBuildArgs '--pull'
     }
   }
 
   stages {
     stage('Checkout') {
-      steps {
-        checkout scm
-      }
-    }
-
-    stage('Install dependencies') {
-      steps {
-        sh '''
-          python3 -m venv .venv
-          . .venv/bin/activate
-          pip install --upgrade pip
-          pip install -r requirements.txt
-        '''
-      }
+      steps { checkout scm }
     }
 
     stage('Run tests') {
       steps {
-        sh '''
-          . .venv/bin/activate
-          pytest --clean-alluredir --alluredir=allure-results
-        '''
+        sh 'pytest --clean-alluredir --alluredir=allure-results'
       }
     }
   }
 
   post {
     always {
-      allure([
-        includeProperties: false,
-        results: [[path: 'allure-results']]
-      ])
+      allure results: [[path: 'allure-results']], includeProperties: false
     }
   }
 }

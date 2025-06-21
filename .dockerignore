@@ -1,0 +1,37 @@
+# Системы контроля версий
+.git
+.gitignore
+
+# Виртуальные окружения
+venv/
+.venv/
+
+# Кеш Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Кеш pytest
+.pytest_cache/
+
+# IDE / редакторы
+.idea/
+.vscode/
+*.sublime-*
+
+# Настройки окружения
+.env
+*.local
+
+# Логи и временные файлы
+*.log
+logs/
+tmp/
+
+# Результаты Allure (монтируемые как volume)
+allure-results/
+
+# Файлы сборок / дистрибутивы (если есть)
+dist/
+build/
+*.egg-info/
