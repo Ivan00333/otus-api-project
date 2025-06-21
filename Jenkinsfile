@@ -1,20 +1,30 @@
 pipeline {
-  agent any
+  agent {
+    docker {
+      image 'python:3.13-slim'
+      args  '--user root'
+    }
+  }
 
   stages {
     stage('Checkout') {
-      steps { checkout scm }
+      steps {
+        checkout scm
+      }
     }
-    stage('Setup Python') {
+
+    stage('Install dependencies') {
       steps {
         sh '''
           python3 -m venv .venv
           . .venv/bin/activate
+          pip install --upgrade pip
           pip install -r requirements.txt
         '''
       }
     }
-    stage('Run Tests') {
+
+    stage('Run tests') {
       steps {
         sh '''
           . .venv/bin/activate
@@ -28,9 +38,7 @@ pipeline {
     always {
       allure([
         includeProperties: false,
-        jdk: '',
-        results: [[path: 'allure-results']],
-        reportBuildPolicy: 'ALWAYS'
+        results: [[path: 'allure-results']]
       ])
     }
   }
