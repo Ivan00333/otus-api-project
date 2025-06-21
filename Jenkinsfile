@@ -6,7 +6,7 @@ pipeline {
             // Ваш Dockerfile лежит в корне проекта
             filename 'Dockerfile'
             // Запускать на любой ноде с Docker Engine
-            label 'docker'
+
             // Всегда подтягивать свежий базовый образ
             additionalBuildArgs '--pull'
         }
@@ -21,9 +21,9 @@ pipeline {
 
     stages {
         stage('Checkout') {
-            steps {
-                checkout scm
-            }
+          steps {
+            git url: 'https://github.com/Ivan00333/otus-opencart-ui-testing.git', branch: 'jenkins'
+          }
         }
 
         stage('Run tests') {
