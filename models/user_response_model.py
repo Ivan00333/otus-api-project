@@ -34,3 +34,7 @@ class UpdateUserResponse(BaseModel):
     name:      str
     job:       str
     updatedAt: str
+
+class RegisterResponse(BaseModel):
+    id: int
+    token: str
