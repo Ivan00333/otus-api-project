@@ -1,52 +1,63 @@
 pipeline {
-    /* Поднятие контейнера из вашего Dockerfile —
-       здесь Jenkins сам соберёт образ перед запуском */
-    agent {
-        dockerfile {
-            // Ваш Dockerfile лежит в корне проекта
-            filename 'Dockerfile'
-            // Запускать на любой ноде с Docker Engine
+  agent any
 
-            // Всегда подтягивать свежий базовый образ
-            additionalBuildArgs '--pull'
-        }
+  // 1) Параметризуем ветку
+  parameters {
+    string(
+      name: 'BRANCH',
+      defaultValue: 'main',
+      description: 'Git branch to checkout'
+    )
+  }
+
+  // 2) Указываем инструменты (если настроены в Global Tool Configuration)
+  tools {
+    python 'Python3'     // здесь имя вашей установки Python в Jenkins
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        // 3) Чекаут нужной ветки
+        checkout([
+          $class: 'GitSCM',
+          branches: [[name: "*/${params.BRANCH}"]],
+          userRemoteConfigs: [[
+            url: 'git@github.com:your-org/your-repo.git',
+            credentialsId: 'your-git-credentials-id'
+          ]]
+        ])
+      }
     }
 
-    options {
-        // Вставлять таймстемпы в логи
-        timestamps()
-        // Пропускать оставшиеся стадии, если какая-то упала
-        skipStagesAfterUnstable()
+    stage('Setup & Install') {
+      steps {
+        sh """
+          python3 -m venv .venv
+          . .venv/bin/activate
+          pip install --upgrade pip
+          pip install -r requirements.txt
+        """
+      }
     }
 
-    stages {
-        stage('Checkout') {
-          steps {
-            git url: 'https://github.com/Ivan00333/otus-opencart-ui-testing.git', branch: 'jenkins'
-          }
-        }
-
-        stage('Run tests') {
-            steps {
-                // Внутри контейнера уже установлен Python, Poetry и зависимости
-                sh '''
-                  # опционально: если хотите увидеть версию Poetry/Python
-                  poetry --version
-                  python --version
-
-                  pytest --clean-alluredir --alluredir=allure-results
-                '''
-            }
-        }
+    stage('Run Tests') {
+      steps {
+        sh """
+          . .venv/bin/activate
+          pytest --clean-alluredir --alluredir=allure-results
+        """
+      }
     }
+  }
 
-    post {
-        always {
-            // Публикация результатов Allure
-            allure([
-                includeProperties: false,
-                results: [[path: 'allure-results']]
-            ])
-        }
+  post {
+    always {
+      // 4) Публикация Allure-отчёта
+      allure([
+        includeProperties: false,
+        results: [[path: 'allure-results']]
+      ])
     }
+  }
 }
