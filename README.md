@@ -4,26 +4,32 @@
 
 ## Описание
 
-Проект реализует автотесты для основных сценариев работы с ресурсами `/users` и `/register`. Он покрывает создание, получение, обновление и удаление пользователей, а также позитивные и негативные случаи регистрации.
+Проект реализует автотесты для основных сценариев работы с ресурсами `/users` и `/register`:
+
+* Создание, получение, обновление и удаление пользователей
+* Позитивные и негативные кейсы регистрации
 
 ### Основные возможности
 
-Поддержка retry-политики при сетевых ошибках.
-Генерация подробных Allure-отчётов с шагами и вложениями.
-Параметризация запуска тестов на разных ветках через Jenkins Pipeline.
+* Поддержка retry-политики при сетевых ошибках
+* Генерация подробных Allure-отчётов с шагами и вложениями
+* Параметризация запуска тестов на разных ветках через Jenkins Pipeline
 
 ## Технологический стек
 
-Язык: Python 3.13
-HTTP-клиент: requests и urllib3 с поддержкой retry
-Валидация и модели: pydantic и pydantic-settings
-Тестовый фреймворк: pytest с расширениями pytest-xdist и pytest-cov
-Отчёты: allure-pytest и Allure CLI
-CI/CD: Jenkins Pipeline
+* **Язык**: Python 3.13
+* **HTTP-клиент**: requests и urllib3 (Retry)
+* **Валидация и модели**: pydantic и pydantic-settings
+* **Тестовый фреймворк**: pytest, pytest-xdist, pytest-cov
+* **Отчёты**: allure-pytest, Allure CLI
+* **CI/CD**: Jenkins Pipeline
 
 ## Предварительные требования
 
-Для работы необходимы установленные Python 3.13, pip, Git и Jenkins с плагином Allure Report.
+* Python 3.13
+* pip
+* Git
+* Jenkins с плагином Allure Report
 
 ## Установка и настройка локально
 
@@ -37,7 +43,7 @@ CI/CD: Jenkins Pipeline
 
    ```bash
    python3 -m venv .venv
-   source .venv/bin/activate      # для Windows PowerShell: .\.venv\Scripts\Activate.ps1
+   source .venv/bin/activate      # Windows PowerShell: .\.venv\Scripts\Activate.ps1
    ```
 3. Установите зависимости:
 
@@ -49,8 +55,8 @@ CI/CD: Jenkins Pipeline
 
    ```bash
    export USERS_CLIENT__URL=https://reqres.in/api/
-   # для Windows PowerShell:
-   # $Env:USERS_CLIENT__URL = 'https://reqres.in/api/'
+   # Windows PowerShell:
+   # $Env:USERS_CLIENT__URL='https://reqres.in/api/'
    ```
 
 ## Структура проекта
@@ -72,7 +78,7 @@ CI/CD: Jenkins Pipeline
 │   ├── test_update_user.py
 │   ├── test_delete_user.py
 │   └── test_register_user.py
-├── pytest.ini                 # Настройки pytest и Allure
+├── pytest.ini                 # Конфигурация pytest и Allure
 ├── requirements.txt           # Список Python-зависимостей
 ├── Dockerfile.jenkins         # Dockerfile для Jenkins-агента с Python3
 ├── Jenkinsfile                # Пайплайн для CI: параметр BRANCH и публикация Allure
@@ -89,16 +95,19 @@ allure open allure-report
 
 ## Jenkins Pipeline
 
-Файл Jenkinsfile параметризован по ветке BRANCH и включает этапы:
-— Checkout указанной ветки из Git
-— Создание виртуального окружения и установка зависимостей
-— Запуск pytest с генерацией Allure-результатов
-— Публикация отчёта из папки allure-results
+Файл `Jenkinsfile` параметризован по ветке BRANCH и включает следующие этапы:
 
-При сборке в интерфейсе Jenkins появится кнопка Allure Report.
+* Checkout указанной ветки из Git
+* Создание виртуального окружения и установка зависимостей
+* Запуск `pytest` с генерацией Allure-результатов
+* Публикация отчёта из папки `allure-results`
+
+После завершения сборки в интерфейсе Jenkins появится кнопка **Allure Report**.
 
 ## Вклад и развитие
 
-Чтобы внести изменения, создайте форк репозитория, новую ветку именем `feature/...`, добавьте улучшения и откройте Pull Request для review.
+* Форкните репозиторий и создайте ветку `feature/...`
+* Добавьте тесты или улучшения
+* Откройте Pull Request для review
 
 © 2025 API Automation Framework для Reqres.in
