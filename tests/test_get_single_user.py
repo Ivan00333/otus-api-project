@@ -23,6 +23,3 @@ class TestGetSingleUser:
             response = users_client.get_single_user(bad_user_id)
         with allure.step("Verify 404 status code for nonexistent user"):
             Assertions.assert_status_code(response, 404)
-
-
-

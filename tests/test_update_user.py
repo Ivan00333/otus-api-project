@@ -55,5 +55,3 @@ class TestUpdateUser:
             response = users_client.update_user(user_id, payload)
         with allure.step("Verify 404 status for nonexistent user update"):
             Assertions.assert_status_code(response, 404)
-
-

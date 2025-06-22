@@ -39,4 +39,3 @@ class TestCreateUser:
             response = users_client.create_user(payload)
         with allure.step("Verify 400 status code for invalid job"):
             Assertions.assert_status_code(response, 400)
-

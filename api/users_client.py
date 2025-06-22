@@ -1,7 +1,7 @@
 from api.base_client import BaseClient
 from config import Settings
 from models.user_request_model import CreateUserRequest, UpdateUserRequest, RegisterRequest, RegisterUnknownUserRequest
-from models.user_response_model import UsersListResponse, RegisterResponse
+from models.user_response_model import UsersListResponse
 from api.routes import ApiRoutes
 from assertions.base_assertions import Assertions
 from requests import Response
@@ -134,14 +134,14 @@ class UsersClient(BaseClient):
             expected_status_code: int,
             schema
     ) -> None:
-        # Убедитесь, что передаётся сам Response, а не response.text
         Assertions.assert_status_code(response, expected_status_code)
-        # Передаём Response объект в assert_schema
         Assertions.assert_schema(response, schema)
 
 
 def get_users_client(settings: Settings) -> UsersClient:
     return UsersClient(settings.users_client)
+
+
 
 
 

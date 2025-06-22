@@ -1,5 +1,5 @@
 from json import JSONDecodeError
-from typing import Any, Sequence
+from typing import Any
 from requests import Response
 from pydantic import ValidationError, BaseModel
 from utils.logger import get_logger
@@ -8,7 +8,9 @@ import allure
 
 logger = get_logger("Assertions")
 
+
 class Assertions:
+
     @staticmethod
     @allure.step("Parse JSON response")
     def _parse_json(response: Response) -> Any:
@@ -78,4 +80,3 @@ class Assertions:
         assert actual == expected_value, (
             error_message or f"Key '{key}' value mismatch. Expected: {expected_value}, Actual: {actual}"
         )
-

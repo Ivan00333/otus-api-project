@@ -1,7 +1,7 @@
 import pytest
 import allure
-from models.user_request_model import CreateUserRequest
 from assertions.base_assertions import Assertions
+
 
 @allure.feature("User Management")
 class TestDeleteUser:
@@ -31,4 +31,3 @@ class TestDeleteUser:
 
         with allure.step("Verify 404 status code for nonexistent deletion"):
             Assertions.assert_status_code(response, 404)
-
