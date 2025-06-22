@@ -10,13 +10,9 @@ RUN apt-get update \
        python3-pip \
     && rm -rf /var/lib/apt/lists/*
 
-# (Опционально) установить Docker-клиент, если планируете запускать Docker внутри Jenkins
 # RUN apt-get update \
 #    && apt-get install -y --no-install-recommends docker.io \
 #    && rm -rf /var/lib/apt/lists/*
 
-# Возвращаемся к пользователю jenkins для безопасного запуска сервера
-USER jenkins
 
-# По умолчанию Jenkins сам запустится как служба при старте контейнера
-# Конфигурацию (плагины, job) можно дополнить через /var/jenkins_home
+USER jenkins

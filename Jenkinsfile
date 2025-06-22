@@ -1,7 +1,6 @@
 pipeline {
   agent any
 
-  // Параметризация ветки
   parameters {
     string(name: 'BRANCH', defaultValue: 'framework', description: 'Git branch to test')
   }
@@ -9,7 +8,6 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        // Чекаут той ветки, что выбрал пользователь
         checkout([
           $class: 'GitSCM',
           branches: [[name: "*/${params.BRANCH}"]],
@@ -43,7 +41,6 @@ pipeline {
 
   post {
     always {
-      // Публикуем Allure-отчёт
       allure results: [[path: 'allure-results']], includeProperties: false
     }
   }
