@@ -5,6 +5,11 @@ pipeline {
     string(name: 'BRANCH', defaultValue: 'framework', description: 'Git branch to test')
   }
 
+  environment {
+        # Базовый URL для API, прописан прямо в файле
+        USERS_CLIENT__URL = 'https://reqres.in/api/'
+    }
+
   stages {
     stage('Checkout') {
       steps {
