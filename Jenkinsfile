@@ -6,7 +6,6 @@ pipeline {
   }
 
   environment {
-        # Базовый URL для API, прописан прямо в файле
         USERS_CLIENT__URL = 'https://reqres.in/api/'
     }
 
