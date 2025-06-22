@@ -14,8 +14,7 @@ pipeline {
           $class: 'GitSCM',
           branches: [[name: "*/${params.BRANCH}"]],
           userRemoteConfigs: [[
-            url: 'git@github.com:your-org/your-repo.git',
-            credentialsId: 'your-ssh-creds-id'
+            url: 'https://github.com/Ivan00333/otus-api-project.git'
           ]]
         ])
       }
