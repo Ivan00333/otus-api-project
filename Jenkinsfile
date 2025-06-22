@@ -1,46 +1,71 @@
 pipeline {
   agent any
 
-  // 1) Параметризуем ветку
+  // Параметризация ветки
   parameters {
-    string(
-      name: 'BRANCH',
-      defaultValue: 'framework',
-      description: 'Git branch to checkout'
-    )
+    string(name: 'BRANCH', defaultValue: 'framework', description: 'Git branch to test')
   }
 
   stages {
     stage('Checkout') {
       steps {
-        git url: 'https://github.com/Ivan00333/otus-api-project.git', branch: 'framework'
+        // Чекаут той ветки, что выбрал пользователь
+        checkout([
+          $class: 'GitSCM',
+          branches: [[name: "*/${params.BRANCH}"]],
+          userRemoteConfigs: [[
+            url: 'git@github.com:your-org/your-repo.git',
+            credentialsId: 'your-ssh-creds-id'
+          ]]
+        ])
       }
     }
 
-    stage('Build Docker Image') {
+    stage('Setup venv & Install') {
       steps {
-        sh 'docker build -t tests .'
-        sh 'docker version'
+        script {
+          if (isUnix()) {
+            sh '''
+              python3 -m venv .venv
+              . .venv/bin/activate
+              pip install --upgrade pip
+              pip install -r requirements.txt
+            '''
+          } else {
+            bat '''
+              python -m venv .venv
+              .\\.venv\\Scripts\\Activate.ps1
+              pip install --upgrade pip
+              pip install -r requirements.txt
+            '''
+          }
+        }
       }
     }
 
     stage('Run Tests') {
       steps {
-        sh """
-          . .venv/bin/activate
-          pytest --clean-alluredir --alluredir=allure-results
-        """
+        script {
+          if (isUnix()) {
+            sh '''
+              . .venv/bin/activate
+              pytest --clean-alluredir --alluredir=allure-results
+            '''
+          } else {
+            bat '''
+              .\\.venv\\Scripts\\Activate.ps1
+              pytest --clean-alluredir --alluredir=allure-results
+            '''
+          }
+        }
       }
     }
   }
 
   post {
     always {
-      // 4) Публикация Allure-отчёта
-      allure([
-        includeProperties: false,
-        results: [[path: 'allure-results']]
-      ])
+      // Публикуем Allure-отчёт
+      allure results: [[path: 'allure-results']], includeProperties: false
     }
   }
 }
