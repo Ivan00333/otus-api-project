@@ -1,6 +1,6 @@
 # API Automation Framework for Reqres.in
 
-Автоматизированный фреймворк для тестирования HTTP API сервиса Reqres.in ([https://reqres.in/](https://reqres.in/)).
+Автоматизированный фреймворк для тестирования API сервиса Reqres.in ([https://reqres.in/](https://reqres.in/)).
 
 ## Описание
 
