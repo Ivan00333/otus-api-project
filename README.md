@@ -1,4 +1,4 @@
-# API Automation Framework for Reqres.in
+# Автоматизированный фреймворк для Reqres.in
 
 Автоматизированный фреймворк для тестирования API сервиса Reqres.in ([https://reqres.in/](https://reqres.in/)).
 
