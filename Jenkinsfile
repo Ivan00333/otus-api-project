@@ -38,7 +38,7 @@ pipeline {
             steps {
                 sh '''
                   . .venv/bin/activate
-                  pytest --clean-alluredir --alluredir=allure-results
+                  pytest -n ${NUM_WORKERS} --clean-alluredir --alluredir=allure-results
                 '''
             }
         }
