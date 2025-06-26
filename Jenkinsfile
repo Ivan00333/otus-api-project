@@ -3,6 +3,7 @@ pipeline {
 
   parameters {
     string(name: 'BRANCH', defaultValue: 'framework', description: 'Git branch to test')
+    string(name: 'NUM_WORKERS', defaultValue: '1', description: 'Number of pytest-xdist workers')
   }
 
   environment {
