@@ -1,4 +1,4 @@
-# API Automation Framework for Reqres.in
+# Автоматизированный фреймворк для Reqres.in
 
 Автоматизированный фреймворк для тестирования API сервиса Reqres.in ([https://reqres.in/](https://reqres.in/)).
 
@@ -36,7 +36,7 @@
 1. Клонируйте репозиторий:
 
    ```bash
-   git clone https://github.com/your-org/your-repo.git
+   git clone https://github.com/Ivan00333/otus-api-project.git
    cd your-repo
    ```
 2. Создайте и активируйте виртуальное окружение:
@@ -62,27 +62,31 @@
 ## Структура проекта
 
 ```
-├── api/
-│   ├── base_client.py         # HTTP-клиент с retry, логированием и шагами Allure
-│   └── users_client.py        # Методы для работы с /users и /register
-├── models/
+├── api
+│   ├── base_client.py       # HTTP-клиент с retry, логированием и шагами Allure
+│   ├── routes.py            # Определение маршрутов API
+│   └── users_client.py      # Методы для работы с /users и /register
+├── assertions
+│   └── base_assertions.py   # Утилиты для проверок и валидации
+├── config.py                # Настройки проекта (Pydantic Settings)
+├── conftest.py              # Общие фикстуры pytest
+├── Dockerfile.jenkins       # Dockerfile для Jenkins-агента с Python3
+├── Jenkinsfile              # Pipeline для CI: выбор ветки и публикация Allure
+├── models
 │   ├── user_request_model.py  # Pydantic-схемы запросов
-│   ├── user_response_model.py # Pydantic-схемы ответов
-│   └── auth_model.py          # Схемы для регистрации
-├── assertions/
-│   └── base_assertions.py     # Утилиты для проверок
-├── tests/
-│   ├── test_get_users.py
-│   ├── test_get_single_user.py
+│   └── user_response_model.py # Pydantic-схемы ответов
+├── pytest.ini               # Конфигурация pytest и Allure
+├── README.md                # Документация проекта
+├── requirements.txt         # Список Python-зависимостей
+├── tests
 │   ├── test_create_user.py
-│   ├── test_update_user.py
 │   ├── test_delete_user.py
-│   └── test_register_user.py
-├── pytest.ini                 # Конфигурация pytest и Allure
-├── requirements.txt           # Список Python-зависимостей
-├── Dockerfile.jenkins         # Dockerfile для Jenkins-агента с Python3
-├── Jenkinsfile                # Пайплайн для CI: параметр BRANCH и публикация Allure
-└── README.md                  # Документация проекта
+│   ├── test_get_single_user.py
+│   ├── test_get_users.py
+│   ├── test_register_user.py
+│   └── test_update_user.py
+└── utils
+    └── logger.py           # Настройка и получение логгера
 ```
 
 ## Запуск тестов локально
@@ -103,11 +107,3 @@ allure open allure-report
 * Публикация отчёта из папки `allure-results`
 
 После завершения сборки в интерфейсе Jenkins появится кнопка **Allure Report**.
-
-## Вклад и развитие
-
-* Форкните репозиторий и создайте ветку `feature/...`
-* Добавьте тесты или улучшения
-* Откройте Pull Request для review
-
-© 2025 API Automation Framework для Reqres.in
